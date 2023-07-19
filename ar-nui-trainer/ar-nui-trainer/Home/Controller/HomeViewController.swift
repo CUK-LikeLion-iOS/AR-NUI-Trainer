@@ -7,23 +7,26 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, ARCharacterDelegate {
+    
+    var characterNum: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func pushedArrButton(_ sender: UIButton) {
+        self.characterNum = 0
+        moveToARVC(homeVC: self)
     }
-    */
-
+    @IBAction func pushedDogButton(_ sender: UIButton) {
+        self.characterNum = 1
+        moveToARVC(homeVC: self)
+    }
+    
+    // MARK: - ARCharacterDelegae 필수 메서드
+    func selectedCharacter() -> Int {
+        return characterNum
+    }
 }

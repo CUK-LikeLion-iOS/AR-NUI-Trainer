@@ -9,20 +9,28 @@
 /* Begin PBXBuildFile section */
 		CC6500622A67C874000EE35F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500612A67C874000EE35F /* AppDelegate.swift */; };
 		CC6500642A67C874000EE35F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6500632A67C874000EE35F /* art.scnassets */; };
-		CC6500662A67C874000EE35F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500652A67C874000EE35F /* ViewController.swift */; };
-		CC6500692A67C874000EE35F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC6500672A67C874000EE35F /* Main.storyboard */; };
+		CC6500662A67C874000EE35F /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500652A67C874000EE35F /* ARViewController.swift */; };
 		CC65006B2A67C875000EE35F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC65006A2A67C875000EE35F /* Assets.xcassets */; };
 		CC65006E2A67C875000EE35F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC65006C2A67C875000EE35F /* LaunchScreen.storyboard */; };
+		CC65007D2A67CBB4000EE35F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65007C2A67CBB4000EE35F /* HomeViewController.swift */; };
+		CC65007F2A67CBBE000EE35F /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC65007E2A67CBBE000EE35F /* Home.storyboard */; };
+		CC6500822A67DEF4000EE35F /* ARCharacterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500812A67DEF4000EE35F /* ARCharacterDelegate.swift */; };
+		CC6500852A67EB76000EE35F /* StackNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500842A67EB76000EE35F /* StackNavigation.swift */; };
+		CC6500872A681128000EE35F /* AR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC6500862A681128000EE35F /* AR.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CC65005E2A67C874000EE35F /* ar-nui-trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ar-nui-trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC6500612A67C874000EE35F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC6500632A67C874000EE35F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		CC6500652A67C874000EE35F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		CC6500682A67C874000EE35F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CC6500652A67C874000EE35F /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		CC65006A2A67C875000EE35F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC65006D2A67C875000EE35F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CC65007C2A67CBB4000EE35F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		CC65007E2A67CBBE000EE35F /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
+		CC6500812A67DEF4000EE35F /* ARCharacterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCharacterDelegate.swift; sourceTree = "<group>"; };
+		CC6500842A67EB76000EE35F /* StackNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigation.swift; sourceTree = "<group>"; };
+		CC6500862A681128000EE35F /* AR.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AR.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,14 +63,98 @@
 		CC6500602A67C874000EE35F /* ar-nui-trainer */ = {
 			isa = PBXGroup;
 			children = (
+				CC6500832A67EA39000EE35F /* Utils */,
+				CC6500802A67DED0000EE35F /* Delegate */,
+				CC6500752A67CA72000EE35F /* AR */,
+				CC6500742A67CA29000EE35F /* Home */,
 				CC6500612A67C874000EE35F /* AppDelegate.swift */,
 				CC6500632A67C874000EE35F /* art.scnassets */,
-				CC6500652A67C874000EE35F /* ViewController.swift */,
-				CC6500672A67C874000EE35F /* Main.storyboard */,
 				CC65006A2A67C875000EE35F /* Assets.xcassets */,
 				CC65006C2A67C875000EE35F /* LaunchScreen.storyboard */,
 			);
 			path = "ar-nui-trainer";
+			sourceTree = "<group>";
+		};
+		CC6500742A67CA29000EE35F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CC65007B2A67CB92000EE35F /* Model */,
+				CC65007A2A67CB8C000EE35F /* View */,
+				CC6500792A67CB82000EE35F /* Controller */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CC6500752A67CA72000EE35F /* AR */ = {
+			isa = PBXGroup;
+			children = (
+				CC6500782A67CAA5000EE35F /* Model */,
+				CC6500772A67CA9E000EE35F /* View */,
+				CC6500762A67CA93000EE35F /* Controller */,
+			);
+			path = AR;
+			sourceTree = "<group>";
+		};
+		CC6500762A67CA93000EE35F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CC6500652A67C874000EE35F /* ARViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CC6500772A67CA9E000EE35F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CC6500862A681128000EE35F /* AR.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CC6500782A67CAA5000EE35F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CC6500792A67CB82000EE35F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CC65007C2A67CBB4000EE35F /* HomeViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CC65007A2A67CB8C000EE35F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CC65007E2A67CBBE000EE35F /* Home.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CC65007B2A67CB92000EE35F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CC6500802A67DED0000EE35F /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				CC6500812A67DEF4000EE35F /* ARCharacterDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		CC6500832A67EA39000EE35F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CC6500842A67EB76000EE35F /* StackNavigation.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,9 +216,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC6500642A67C874000EE35F /* art.scnassets in Resources */,
+				CC65007F2A67CBBE000EE35F /* Home.storyboard in Resources */,
 				CC65006E2A67C875000EE35F /* LaunchScreen.storyboard in Resources */,
 				CC65006B2A67C875000EE35F /* Assets.xcassets in Resources */,
-				CC6500692A67C874000EE35F /* Main.storyboard in Resources */,
+				CC6500872A681128000EE35F /* AR.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,22 +230,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC6500662A67C874000EE35F /* ViewController.swift in Sources */,
+				CC6500662A67C874000EE35F /* ARViewController.swift in Sources */,
 				CC6500622A67C874000EE35F /* AppDelegate.swift in Sources */,
+				CC65007D2A67CBB4000EE35F /* HomeViewController.swift in Sources */,
+				CC6500852A67EB76000EE35F /* StackNavigation.swift in Sources */,
+				CC6500822A67DEF4000EE35F /* ARCharacterDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		CC6500672A67C874000EE35F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CC6500682A67C874000EE35F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		CC65006C2A67C875000EE35F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -290,11 +378,12 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = Home;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,9 +391,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jin.yoo.ar-nui-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -320,11 +412,12 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = Home;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,9 +425,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jin.yoo.ar-nui-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

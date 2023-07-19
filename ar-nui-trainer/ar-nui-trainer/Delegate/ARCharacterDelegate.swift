@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol ARCharacterDelegate: AnyObject {
+    func selectedCharacter() -> Int
+}
