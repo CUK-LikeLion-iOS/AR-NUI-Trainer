@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ARCharacterDelegate: AnyObject {
-    func selectedCharacter() -> Int
+    func selectedArr() -> Arr?
 }

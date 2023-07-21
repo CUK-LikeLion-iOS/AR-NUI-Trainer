@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC18246C2A6AF82100A4594A /* ARCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC18246B2A6AF82100A4594A /* ARCharacter.swift */; };
 		CC6500622A67C874000EE35F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500612A67C874000EE35F /* AppDelegate.swift */; };
 		CC6500642A67C874000EE35F /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6500632A67C874000EE35F /* art.scnassets */; };
 		CC6500662A67C874000EE35F /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500652A67C874000EE35F /* ARViewController.swift */; };
@@ -17,9 +18,13 @@
 		CC6500822A67DEF4000EE35F /* ARCharacterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500812A67DEF4000EE35F /* ARCharacterDelegate.swift */; };
 		CC6500852A67EB76000EE35F /* StackNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6500842A67EB76000EE35F /* StackNavigation.swift */; };
 		CC6500872A681128000EE35F /* AR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC6500862A681128000EE35F /* AR.storyboard */; };
+		CCB45C232A69294B00207F3A /* UIExplorerResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB45C222A69294B00207F3A /* UIExplorerResource.swift */; };
+		CCB45C252A6930F000207F3A /* CustomizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB45C242A6930F000207F3A /* CustomizeView.swift */; };
+		CCB45C272A6A6B0300207F3A /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB45C262A6A6B0300207F3A /* HomeData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC18246B2A6AF82100A4594A /* ARCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCharacter.swift; sourceTree = "<group>"; };
 		CC65005E2A67C874000EE35F /* ar-nui-trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ar-nui-trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC6500612A67C874000EE35F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC6500632A67C874000EE35F /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -31,6 +36,9 @@
 		CC6500812A67DEF4000EE35F /* ARCharacterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCharacterDelegate.swift; sourceTree = "<group>"; };
 		CC6500842A67EB76000EE35F /* StackNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackNavigation.swift; sourceTree = "<group>"; };
 		CC6500862A681128000EE35F /* AR.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AR.storyboard; sourceTree = "<group>"; };
+		CCB45C222A69294B00207F3A /* UIExplorerResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExplorerResource.swift; sourceTree = "<group>"; };
+		CCB45C242A6930F000207F3A /* CustomizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeView.swift; sourceTree = "<group>"; };
+		CCB45C262A6A6B0300207F3A /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +122,8 @@
 		CC6500782A67CAA5000EE35F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CCB45C222A69294B00207F3A /* UIExplorerResource.swift */,
+				CC18246B2A6AF82100A4594A /* ARCharacter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -137,6 +147,7 @@
 		CC65007B2A67CB92000EE35F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CCB45C262A6A6B0300207F3A /* HomeData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -153,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6500842A67EB76000EE35F /* StackNavigation.swift */,
+				CCB45C242A6930F000207F3A /* CustomizeView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -230,10 +242,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCB45C232A69294B00207F3A /* UIExplorerResource.swift in Sources */,
 				CC6500662A67C874000EE35F /* ARViewController.swift in Sources */,
 				CC6500622A67C874000EE35F /* AppDelegate.swift in Sources */,
 				CC65007D2A67CBB4000EE35F /* HomeViewController.swift in Sources */,
+				CCB45C272A6A6B0300207F3A /* HomeData.swift in Sources */,
 				CC6500852A67EB76000EE35F /* StackNavigation.swift in Sources */,
+				CC18246C2A6AF82100A4594A /* ARCharacter.swift in Sources */,
+				CCB45C252A6930F000207F3A /* CustomizeView.swift in Sources */,
 				CC6500822A67DEF4000EE35F /* ARCharacterDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
