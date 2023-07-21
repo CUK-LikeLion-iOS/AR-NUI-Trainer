@@ -11,27 +11,50 @@ import ARKit
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
     
-
+    @IBOutlet var courseTitleLabel: UILabel!
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var directionBtnView: UIView!
+    @IBOutlet weak var directionLabel: UILabel!
+
+    var stageNumber = 0
+    var swipeDirection: UISwipeGestureRecognizer.Direction = .right
     
+    // 선택된 AR 캐릭터 관련 프로퍼티
     weak var arCharacterDelegate: ARCharacterDelegate?
-    var arCharacter: Int {
-        guard let character = arCharacterDelegate?.selectedCharacter() else { return 0 }
-        return character
+    var arCharacter: Arr!
+    
+    // UIExplorer 리소스 관련 프로퍼티
+    var UIExplorer
+    : UIExplorerResource = UIExplorerResource()
+    var stageTitleList: [String] {
+        return UIExplorer
+            .stageTitles
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set the view's delegate
+
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
+        
+        setARCharacter()
+
+        UIExplorer.addNewGestureRecognizer(
+            stageNumber: 0,
+            arCharacter: self.arCharacter,
+            sceneView: self.sceneView,
+            swipeDirection: self.swipeDirection
+        )
+
+        makeCornerRoundShape(targetView: titleView, cornerRadius: 20)
+        makeCornerRoundShape(targetView: directionBtnView, cornerRadius: 50)
+        directionBtnView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
         let configuration = ARImageTrackingConfiguration()
         
         guard let trackingImage = ARReferenceImage.referenceImages(inGroupNamed: "Explore Ticket", bundle: Bundle.main) else {
@@ -41,130 +64,104 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         configuration.trackingImages = trackingImage
         configuration.maximumNumberOfTrackedImages = 1
 
-        // Run the view's session
         sceneView.session.run(configuration)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Pause the view's session
         sceneView.session.pause()
     }
     
+    // MARK: - ARSCNViewDelegate
+   
+   func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+       guard let imageAnchor = anchor as? ARImageAnchor else {
+           return nil
+       }
+       
+       if imageAnchor.referenceImage.name == "card1" {
+           return arCharacter.arrContainerNode
+       }
+       
+       return nil
+   }
+    
     // MARK: - IBAction Methods
     
-    @IBAction func moveBackStage(_ sender: UIButton) {
-        moveBacktoHome(vc: self)
-    }
-    
-    // MARK: - ARSCNViewDelegate
-    
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        guard let imageAnchor = anchor as? ARImageAnchor else {
-            return nil
-        }
-        
-        if imageAnchor.referenceImage.name == "card1" {
-            let charcterNode = self.arCharacter == 0 ? makeArrhuNode()! : makeDogNode()!
-            let settingFinishedCharacterNode = setARCharacter(charcterNode: charcterNode)
-
-            return settingFinishedCharacterNode
-        }
-        
-        return nil
-    }
-    
-    // MARK: - UIResponde Override Methods
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        
-        guard let touch = touches.first else { return }
-        
-        let currentLocation = touch.location(in: sceneView)
-        let previousLocation = touch.previousLocation(in: sceneView)
-        let rotationAngleX = (currentLocation.x - previousLocation.x) * 0.01
-        let rotationAngleY = (currentLocation.y - previousLocation.y) * 0.01
-
-        if (self.arCharacter == 0) {
-            makeArrRotate(rotationAngleX: rotationAngleX, rotationAngleY: rotationAngleY)
+    @IBAction func moveNextStageNumber(_ sender: UIButton) {
+        if (self.stageNumber == stageTitleList.count - 1) {
+            moveBacktoHome(vc: self)
         } else {
-            makeDogRotate(rotationAngleX: rotationAngleX, rotationAngleY: rotationAngleY)
+            
+            self.stageNumber += 1
+
+            // 스와이프 스테이지면 방향 버튼 뷰가 보여야함
+            directionBtnView.isHidden = self.stageNumber == 2 ? false : true
+            updateGestureRecognizer()
+            courseTitleLabel.text = stageTitleList[stageNumber]
         }
+    }
+
+    @IBAction func moveBackStageNumber(_ sender: UIButton) {
+        if (self.stageNumber == 0) {
+            moveBacktoHome(vc: self)
+        } else {
+            self.stageNumber -= 1
+
+            directionBtnView.isHidden = self.stageNumber == 2 ? false : true
+            updateGestureRecognizer()
+            courseTitleLabel.text = stageTitleList[stageNumber]
+        }
+    }
+    
+    @IBAction func leftBtnPressed(_ sender: UIButton) {
+        self.swipeDirection = .left
+        self.directionLabel.text = "왼쪽"
+        updateGestureRecognizer()
+    }
+    
+    @IBAction func rightBtnPressed(_ sender: UIButton) {
+        self.swipeDirection = .right
+        self.directionLabel.text = "오른쪽"
+        updateGestureRecognizer()
+    }
+    
+    @IBAction func upBtnPressed(_ sender: UIButton) {
+        self.swipeDirection = .up
+        self.directionLabel.text = "위"
+        updateGestureRecognizer()
+    }
+    
+    @IBAction func downBtnPressed(_ sender: UIButton) {
+        self.swipeDirection = .down
+        self.directionLabel.text = "아래"
+        updateGestureRecognizer()
     }
 
     // MARK: - Feature Methods
     
-    func makeArrhuNode() -> [SCNNode]? {
-        guard let arrScene = SCNScene(named: "art.scnassets/Arr/Arr.scn") else {
-            return nil
+    func setARCharacter() {
+        guard let character = arCharacterDelegate?.selectedArr() else {
+            return moveBacktoHome(vc: self)
         }
-        guard let arrNode = arrScene.rootNode.childNode(withName: "Arr", recursively: true) else {
-            print("Here")
-            return nil
-        }
-        
-        return [arrNode]
+        self.arCharacter = character
+        self.arCharacter.setSceneView(sceneView: sceneView)
     }
     
-    func makeDogNode() -> [SCNNode]? {
-        guard let dogScene = SCNScene(named: "art.scnassets/Dog/Dog.scn") else {
-            return nil
-        }
-        if let dogNode = dogScene.rootNode.childNode(withName: "Dog", recursively: true) {
-            if let neckRopeNode = dogScene.rootNode.childNode(withName: "NeckRope", recursively: true) {
-                return [dogNode, neckRopeNode]
-            }
-        }
-        
-        return nil
-    }
-    
-    func setARCharacter(charcterNode: [SCNNode]) -> SCNNode {
-        let node = SCNNode()
-        
-        for idx in 0..<charcterNode.count {
-            if (arCharacter == 0) {
-                charcterNode[idx].transform = SCNMatrix4MakeRotation(-GLKMathDegreesToRadians(20), 1, 0, 0)
-                charcterNode[idx].scale = SCNVector3(0.00002, 0.00002, 0.00002)
-            } else {
-                charcterNode[idx].transform = SCNMatrix4MakeRotation(GLKMathDegreesToRadians(70), 1, 0, 0)
-                charcterNode[idx].scale = SCNVector3(0.01, 0.01, 0.01)
-            }
-            node.addChildNode(charcterNode[idx])
-        }
-        
-        return node
-    }
+    func updateGestureRecognizer() {
+        UIExplorer.removeGestureRecognizer(sceneView: sceneView)
+        UIExplorer.addNewGestureRecognizer(
+            stageNumber: self.stageNumber,
+            arCharacter: self.arCharacter,
+            sceneView: self.sceneView,
+            swipeDirection: self.swipeDirection
+        )
 
-    func makeArrRotate(rotationAngleX: CGFloat, rotationAngleY: CGFloat) {
-        
-        guard let arrNode = sceneView.scene.rootNode.childNode(withName: "Arr", recursively: true) else {
-            return
+        // 스와이프 스테이지(2)일 떄는 캐릭터가 정면을 바라보지 않을 수 있으니 전후 단계로 이동할 때 정면을 바라보게 세팅
+        if (stageNumber == 1 || stageNumber == 3) {
+            let action = SCNAction.rotateTo(x: CGFloat(arCharacter.eulerAngleOfArrNoe.x), y: CGFloat(arCharacter.eulerAngleOfArrNoe.y), z: CGFloat(arCharacter.eulerAngleOfArrNoe.z), duration: 0.2)
+            arCharacter.arrNode.runAction(action)
         }
-
-        let yRotation = SCNAction.rotateBy(x: 0, y: rotationAngleX, z: 0, duration: 0)
-        let xRotation = SCNAction.rotateBy(x: rotationAngleY, y: 0, z: 0, duration: 0)
-
-        arrNode.runAction(yRotation)
-        arrNode.runAction(xRotation)
-    }
-    
-    func makeDogRotate(rotationAngleX: CGFloat, rotationAngleY: CGFloat) {
-        guard let dogNode = sceneView.scene.rootNode.childNode(withName: "Dog", recursively: true) else {
-            return
-        }
-        guard let neckRopeNode = sceneView.scene.rootNode.childNode(withName: "NeckRope", recursively: true) else {
-            return
-        }
-        
-        let yRotation = SCNAction.rotateBy(x: 0, y: rotationAngleX, z: 0, duration: 0)
-        let xRotation = SCNAction.rotateBy(x: rotationAngleY, y: 0, z: 0, duration: 0)
-
-        dogNode.runAction(yRotation)
-        neckRopeNode.runAction(yRotation)
-        dogNode.runAction(xRotation)
-        neckRopeNode.runAction(xRotation)
     }
 }

@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import SceneKit
 
 class HomeViewController: UIViewController, ARCharacterDelegate {
     
     var characterNum: Int = 0
+    let homeResouce: HomeResource = HomeResource()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +28,32 @@ class HomeViewController: UIViewController, ARCharacterDelegate {
     }
     
     // MARK: - ARCharacterDelegae 필수 메서드
-    func selectedCharacter() -> Int {
-        return characterNum
+    func selectedArr() -> Arr? {
+        if (self.characterNum == 0) {
+            guard let containerNode: SCNNode = makeArrContainerNode() else {
+                return nil
+            }
+            return Arr(arrContainerNode: containerNode, arrNodeName: homeResouce.arrNodeName)
+        }
+        return nil
+    }
+    
+    // MARK: - Feature Methods
+
+    func makeArrContainerNode() -> SCNNode? {
+        let node: SCNNode = SCNNode()
+
+        guard let arrScene = SCNScene(named: homeResouce.arrSceneName) else {
+            return nil
+        }
+        guard let arrNode = arrScene.rootNode.childNode(withName: homeResouce.arrNodeName, recursively: true) else {
+            return nil
+        }
+
+        arrNode.transform = SCNMatrix4MakeRotation(-GLKMathDegreesToRadians(30), 1, 0, 0)
+        arrNode.scale = SCNVector3(0.00002, 0.00002, 0.00002)
+        
+        node.addChildNode(arrNode)
+        return node
     }
 }
