@@ -14,8 +14,10 @@ class Arr {
     private var sceneView: ARSCNView!
     let arrContainerNode: SCNNode
     let arrNode: SCNNode
-    let eulerAngleOfArrNoe: SCNVector3
+    private let eulerAngleOfArrNoe: SCNVector3
     private var longPressStartTime: CFTimeInterval = 0.0
+    private var initialScale: CGFloat = 0.00002
+    private var updatedScale: CGFloat = 0.00002
     
     init(arrContainerNode: SCNNode, arrNodeName: String) {
         self.arrContainerNode = arrContainerNode
@@ -27,30 +29,7 @@ class Arr {
         self.sceneView = sceneView
     }
     
-    // MARK: - Private Methods
-
-    private func readyAction() {
-        let scaleAction = SCNAction.customAction(duration: 0.0) {
-            (node, elapsedTime) in
-            self.arrNode.scale = SCNVector3(0.00002, 0.000017, 0.00002)
-        }
-        arrNode.runAction(scaleAction)
-    }
-    
-    private func highJumpAction(longPressDuration: CFTimeInterval) {
-        let scaleAction = SCNAction.customAction(duration: 0.0) {
-            (node, elapsedTime) in
-            self.arrNode.scale = SCNVector3(0.00002, 0.00002, 0.00002)
-        }
-        let jumpHeight = CGFloat(longPressDuration) * 0.1
-        let jumpAction = SCNAction.moveBy(x: 0, y: jumpHeight, z: 0, duration: 0.2)
-        let fallAction = SCNAction.moveBy(x: 0, y: -jumpHeight, z: 0, duration: 0.2)
-        let jumpSequence = SCNAction.sequence([scaleAction, jumpAction, fallAction])
-
-        arrNode.runAction(jumpSequence)
-    }
-    
-    // MARK: - Selector Methods
+    // MARK: - Action Methods
 
     @objc func jump() {
         let jumpAction = SCNAction.moveBy(x: 0, y: 0.03, z: 0, duration: 0.2)
@@ -94,9 +73,7 @@ class Arr {
     @objc func eulerAngleRotate(_ gesture: UIPanGestureRecognizer) {
         
         if (gesture.state == .ended || gesture.state == .cancelled) {
-            // 제스처가 끝나거나 취소되면 정면을 바라보게 세팅
-            let action = SCNAction.rotateTo(x: CGFloat(eulerAngleOfArrNoe.x), y: CGFloat(eulerAngleOfArrNoe.y), z: CGFloat(eulerAngleOfArrNoe.z), duration: 0.2)
-            arrNode.runAction(action)
+            resetARCharacterAngle()
         } else {
             let translation = gesture.translation(in: sceneView)
             
@@ -110,6 +87,73 @@ class Arr {
             arrNode.runAction(xRotation)
         }
     }
+    
+    @objc func scaleUpAndDown(_ gesture: UIPinchGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            updatedScale = CGFloat(arrNode.scale.x)
+            break
+        case .changed:
+            let scale = gesture.scale
+            
+            let scaleValue = updatedScale * scale
+            
+            // Animate the scaling using SCNAction
+            let scaleAction = SCNAction.scale(to: scaleValue, duration: 0.0)
+            arrNode.runAction(scaleAction)
+            break
+        default:
+            return
+        }
+    }
+    
+    @objc func zAxisRotate(_ gesture: UIRotationGestureRecognizer) {
+        if (gesture.state == .changed) {
+            let rotationAngle = gesture.rotation
+            let degrees = -GLKMathRadiansToDegrees(Float(rotationAngle) * 0.005)
+            let rotationAction = SCNAction.rotateBy(x: 0, y: 0, z: CGFloat(degrees), duration: 0.0)
+            arrNode.runAction(rotationAction)
+        }
+    }
+    
+    // MARK: - Reset Methods
+    
+    func resetARCharacterAngle() {
+        let resetAngleAction = SCNAction.rotateTo(x: CGFloat(eulerAngleOfArrNoe.x), y: CGFloat(eulerAngleOfArrNoe.y), z: CGFloat(eulerAngleOfArrNoe.z), duration: 0.2)
+        arrNode.runAction(resetAngleAction)
+    }
+    
+    func resetARCharacterScale() {
+        let resetScaleAction = SCNAction.customAction(duration: 0.2) { (_, _) in
+            self.arrNode.scale = SCNVector3(self.initialScale, self.initialScale, self.initialScale)
+        }
+        
+        arrNode.runAction(resetScaleAction)
+    }
+    
+    // MARK: - highJump Feature Methods
+
+    private func readyAction() {
+        let scaleAction = SCNAction.customAction(duration: 0.0) {
+            (_, _) in
+            self.arrNode.scale = SCNVector3(0.00002, 0.000017, 0.00002)
+        }
+        arrNode.runAction(scaleAction)
+    }
+    
+    private func highJumpAction(longPressDuration: CFTimeInterval) {
+        let scaleAction = SCNAction.customAction(duration: 0.0) {
+            (_, _) in
+            self.arrNode.scale = SCNVector3(0.00002, 0.00002, 0.00002)
+        }
+        let jumpHeight = CGFloat(longPressDuration) * 0.1
+        let jumpAction = SCNAction.moveBy(x: 0, y: jumpHeight, z: 0, duration: 0.2)
+        let fallAction = SCNAction.moveBy(x: 0, y: -jumpHeight, z: 0, duration: 0.2)
+        let jumpSequence = SCNAction.sequence([scaleAction, jumpAction, fallAction])
+
+        arrNode.runAction(jumpSequence)
+    }
+
 }
 
 // MARK: - Dog Class

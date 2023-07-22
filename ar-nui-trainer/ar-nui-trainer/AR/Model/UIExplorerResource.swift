@@ -8,6 +8,10 @@
 import ARKit
 import SceneKit
 
+enum Stage: Int {
+    case shortTap = 0, longTap, swipe, drag, pinch, rotate
+}
+
 // MARK: - UIExplorer Struct
 
 struct UIExplorerResource {
@@ -20,23 +24,28 @@ struct UIExplorerResource {
     
     // MARK: Add GestureRecognizer Methods
     
-    mutating func addNewGestureRecognizer(stageNumber: Int, arCharacter: Arr, sceneView: ARSCNView, swipeDirection: UISwipeGestureRecognizer.Direction) {
-        switch stageNumber {
-        case 0:
+    mutating func addNewGestureRecognizer(stage: Stage, arCharacter: Arr, sceneView: ARSCNView, swipeDirection: UISwipeGestureRecognizer.Direction) {
+        switch stage {
+        case .shortTap:
             addTapGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.jump), sceneView: sceneView)
             break
-        case 1:
+        case .longTap:
             addLongPressGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.highJump), sceneView: sceneView)
             break
-        case 2:
+        case .swipe:
             addSwipeGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.rightAngleRotate), sceneView: sceneView, swipeDirection: swipeDirection)
-        case 3:
+        case .drag:
             addPanGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.eulerAngleRotate), sceneView: sceneView)
             break
-        default:
+        case .pinch:
+            addPinchGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.scaleUpAndDown), sceneView: sceneView)
+        case .rotate:
+            addRotationGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.zAxisRotate), sceneView: sceneView)
             break
         }
     }
+    
+    // MARK: - GestureRecognizer Feature Methods
     
     private mutating func addTapGestureRecognizer(targetCharacter: Any, handler action: Selector?, sceneView: ARSCNView) {
         let tapGesture = UITapGestureRecognizer(target: targetCharacter, action: action)
@@ -66,6 +75,20 @@ struct UIExplorerResource {
 
         sceneView.addGestureRecognizer(panGesture)
         self.UIGesture = panGesture
+    }
+    
+    private mutating func addPinchGestureRecognizer(targetCharacter: Any, handler action: Selector?, sceneView: ARSCNView) {
+        let pinchGesture = UIPinchGestureRecognizer(target: targetCharacter, action: action)
+        
+        sceneView.addGestureRecognizer(pinchGesture)
+        self.UIGesture = pinchGesture
+    }
+    
+    private mutating func addRotationGestureRecognizer(targetCharacter: Any, handler action: Selector?, sceneView: ARSCNView) {
+        let rotationGesture = UIRotationGestureRecognizer(target: targetCharacter, action: action)
+        
+        sceneView.addGestureRecognizer(rotationGesture)
+        self.UIGesture = rotationGesture
     }
     
     
