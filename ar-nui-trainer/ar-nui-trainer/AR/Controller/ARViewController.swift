@@ -17,7 +17,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var directionBtnView: UIView!
     @IBOutlet weak var directionLabel: UILabel!
 
-    var stageNumber = 0
+    var stage: Stage = .shortTap
     var swipeDirection: UISwipeGestureRecognizer.Direction = .right
     
     // 선택된 AR 캐릭터 관련 프로퍼티
@@ -32,6 +32,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             .stageTitles
     }
     
+    // MARK: - View LifeCycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,7 +43,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         setARCharacter()
 
         UIExplorer.addNewGestureRecognizer(
-            stageNumber: 0,
+            stage: stage,
             arCharacter: self.arCharacter,
             sceneView: self.sceneView,
             swipeDirection: self.swipeDirection
@@ -87,33 +89,33 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
        return nil
    }
     
-    // MARK: - IBAction Methods
+    // MARK: - Move Stage IBAction Methods
     
-    @IBAction func moveNextStageNumber(_ sender: UIButton) {
-        if (self.stageNumber == stageTitleList.count - 1) {
+    @IBAction func moveNextStage(_ sender: UIButton) {
+        if (stage == .rotate) {
             moveBacktoHome(vc: self)
         } else {
-            
-            self.stageNumber += 1
+            resetARCharacter()
+            moveStage(isNext: true)
 
-            // 스와이프 스테이지면 방향 버튼 뷰가 보여야함
-            directionBtnView.isHidden = self.stageNumber == 2 ? false : true
             updateGestureRecognizer()
-            courseTitleLabel.text = stageTitleList[stageNumber]
+            courseTitleLabel.text = stageTitleList[stage.rawValue]
         }
     }
 
-    @IBAction func moveBackStageNumber(_ sender: UIButton) {
-        if (self.stageNumber == 0) {
+    @IBAction func moveBackStage(_ sender: UIButton) {
+        if (stage == .shortTap) {
             moveBacktoHome(vc: self)
         } else {
-            self.stageNumber -= 1
+            resetARCharacter()
+            moveStage(isNext: false)
 
-            directionBtnView.isHidden = self.stageNumber == 2 ? false : true
             updateGestureRecognizer()
-            courseTitleLabel.text = stageTitleList[stageNumber]
+            courseTitleLabel.text = stageTitleList[stage.rawValue]
         }
     }
+    
+    // MARK: - Direction Button IBAction Methods
     
     @IBAction func leftBtnPressed(_ sender: UIButton) {
         self.swipeDirection = .left
@@ -152,16 +154,43 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     func updateGestureRecognizer() {
         UIExplorer.removeGestureRecognizer(sceneView: sceneView)
         UIExplorer.addNewGestureRecognizer(
-            stageNumber: self.stageNumber,
+            stage: stage,
             arCharacter: self.arCharacter,
             sceneView: self.sceneView,
             swipeDirection: self.swipeDirection
         )
-
-        // 스와이프 스테이지(2)일 떄는 캐릭터가 정면을 바라보지 않을 수 있으니 전후 단계로 이동할 때 정면을 바라보게 세팅
-        if (stageNumber == 1 || stageNumber == 3) {
-            let action = SCNAction.rotateTo(x: CGFloat(arCharacter.eulerAngleOfArrNoe.x), y: CGFloat(arCharacter.eulerAngleOfArrNoe.y), z: CGFloat(arCharacter.eulerAngleOfArrNoe.z), duration: 0.2)
-            arCharacter.arrNode.runAction(action)
+    }
+    
+    func resetARCharacter() {
+        if (stage == .swipe || stage == .rotate) {
+            arCharacter.resetARCharacterAngle()
+        } else if (stage == .pinch) {
+            arCharacter.resetARCharacterScale()
         }
+    }
+            
+    func moveStage(isNext: Bool) {
+        switch stage {
+        case .shortTap:
+            stage = .longTap
+            break
+        case .longTap:
+            stage = isNext ? .swipe : .shortTap
+            break
+        case .swipe:
+            stage = isNext ? .drag : .longTap
+            break
+        case .drag:
+            stage = isNext ? .pinch : .swipe
+            break
+        case .pinch:
+            stage = isNext ? .rotate : .drag
+            break
+        case .rotate:
+            stage = .pinch
+            break
+        }
+        
+        directionBtnView.isHidden = (stage == .swipe) ? false : true
     }
 }
