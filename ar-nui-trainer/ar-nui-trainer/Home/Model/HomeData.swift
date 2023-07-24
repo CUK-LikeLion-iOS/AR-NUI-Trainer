@@ -14,4 +14,14 @@ struct HomeResource {
     var arrNodeName: String {
         return "Arr"
     }
+    
+    var finnSceneName: String {
+        return "art.scnassets/Finn/Finn.scn"
+    }
+    var finnNodeName: String {
+        return "Finn"
+    }
+    var finnBodyNodeName: String {
+        return "Finn_Body"
+    }
 }

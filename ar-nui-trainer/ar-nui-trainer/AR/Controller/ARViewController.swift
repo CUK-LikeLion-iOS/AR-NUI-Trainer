@@ -16,13 +16,18 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var directionBtnView: UIView!
     @IBOutlet weak var directionLabel: UILabel!
-
+    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var previousBtnView: UIView!
+    @IBOutlet weak var nextBtnView: UIView!
+    
     var stage: Stage = .shortTap
     var swipeDirection: UISwipeGestureRecognizer.Direction = .right
+    var isDescriptionViewPresented = false
     
     // 선택된 AR 캐릭터 관련 프로퍼티
     weak var arCharacterDelegate: ARCharacterDelegate?
-    var arCharacter: Arr!
+    var arCharacter: ARCharacter!
     
     // UIExplorer 리소스 관련 프로퍼티
     var UIExplorer
@@ -50,6 +55,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         )
 
         makeCornerRoundShape(targetView: titleView, cornerRadius: 20)
+        makeCornerRoundShape(targetView: previousBtnView, cornerRadius: 20)
+        makeCornerRoundShape(targetView: nextBtnView, cornerRadius: 20)
         makeCornerRoundShape(targetView: directionBtnView, cornerRadius: 50)
         directionBtnView.isHidden = true
     }
@@ -83,7 +90,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
        }
        
        if imageAnchor.referenceImage.name == "card1" {
-           return arCharacter.arrContainerNode
+           return arCharacter.characterContainerNode
        }
        
        return nil
@@ -140,11 +147,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         self.directionLabel.text = "아래"
         updateGestureRecognizer()
     }
-
+    
+    // MARK: - Description View Gesture Recognizer Method
+    
+    @IBAction func descriptionViewTouched(_ sender: UITapGestureRecognizer) {
+        self.descriptionView.isHidden = true
+    }
+    
     // MARK: - Feature Methods
     
     func setARCharacter() {
-        guard let character = arCharacterDelegate?.selectedArr() else {
+        guard let character = arCharacterDelegate?.selectedARCharacter() else {
             return moveBacktoHome(vc: self)
         }
         self.arCharacter = character
@@ -163,7 +176,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     
     func resetARCharacter() {
         if (stage == .swipe || stage == .rotate) {
-            arCharacter.resetARCharacterAngle()
+            if (arCharacter is Finn) {
+                let finnBodyNode = (arCharacter as! Finn).bodyNode
+                arCharacter.resetARCharacterAngle(targetNode: finnBodyNode)
+            } else {
+                arCharacter.resetARCharacterAngle(targetNode: arCharacter.characterNode)
+            }
         } else if (stage == .pinch) {
             arCharacter.resetARCharacterScale()
         }
@@ -192,5 +210,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         }
         
         directionBtnView.isHidden = (stage == .swipe) ? false : true
+        setDescriptionView()
+    }
+    
+    func setDescriptionView() {
+        if (isDescriptionViewPresented == false && stage == .pinch) {
+            descriptionView.isHidden = false
+            descriptionLabel.text = "두 손가락 사용하기"
+            isDescriptionViewPresented = true
+        }
     }
 }
