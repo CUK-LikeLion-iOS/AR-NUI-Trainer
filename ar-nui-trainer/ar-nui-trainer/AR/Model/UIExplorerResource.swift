@@ -24,7 +24,7 @@ struct UIExplorerResource {
     
     // MARK: Add GestureRecognizer Methods
     
-    mutating func addNewGestureRecognizer(stage: Stage, arCharacter: Arr, sceneView: ARSCNView, swipeDirection: UISwipeGestureRecognizer.Direction) {
+    mutating func addNewGestureRecognizer(stage: Stage, arCharacter: ARCharacter, sceneView: ARSCNView, swipeDirection: UISwipeGestureRecognizer.Direction) {
         switch stage {
         case .shortTap:
             addTapGestureRecognizer(targetCharacter: arCharacter, handler: #selector(arCharacter.jump), sceneView: sceneView)

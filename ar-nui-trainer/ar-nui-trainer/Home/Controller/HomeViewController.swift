@@ -26,16 +26,20 @@ class HomeViewController: UIViewController, ARCharacterDelegate {
         self.characterNum = 1
         moveToARVC(homeVC: self)
     }
-    
+
     // MARK: - ARCharacterDelegae 필수 메서드
-    func selectedArr() -> Arr? {
+    func selectedARCharacter() -> ARCharacter? {
         if (self.characterNum == 0) {
             guard let containerNode: SCNNode = makeArrContainerNode() else {
                 return nil
             }
             return Arr(arrContainerNode: containerNode, arrNodeName: homeResouce.arrNodeName)
+        } else {
+            guard let containerNode: SCNNode = makeFinnContainerNode() else {
+                return nil
+            }
+            return Finn(finnContainerNode: containerNode, finnNodeName: homeResouce.finnNodeName, finnBodyNodeName: homeResouce.finnBodyNodeName)
         }
-        return nil
     }
     
     // MARK: - Feature Methods
@@ -54,6 +58,25 @@ class HomeViewController: UIViewController, ARCharacterDelegate {
         arrNode.scale = SCNVector3(0.00002, 0.00002, 0.00002)
         
         node.addChildNode(arrNode)
+        return node
+    }
+    
+    func makeFinnContainerNode() -> SCNNode? {
+        let node: SCNNode = SCNNode()
+        
+        guard let finnScene = SCNScene(named: homeResouce.finnSceneName) else {
+            return nil
+        }
+      
+        guard let finnNode = finnScene.rootNode.childNode(withName: homeResouce.finnNodeName, recursively: true) else {
+            return nil
+        }
+        
+        finnNode.transform = SCNMatrix4MakeRotation(-GLKMathDegreesToRadians(20), 1, 0, 0)
+        finnNode.scale = SCNVector3(0.0007, 0.0007, 0.0007)
+        
+        node.addChildNode(finnNode)
+        
         return node
     }
 }
